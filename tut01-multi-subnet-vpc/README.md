@@ -31,7 +31,7 @@ Private subnet #1
     az       : us-east-1a
     ipv4 cidr: 10.0.10.0/24
 
-Private subnet #1
+Private subnet #2
 
     name tag : private2
     vpc      : test_vpc
