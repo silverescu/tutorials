@@ -3,30 +3,36 @@
 
 ### Create a new vpc
 
-name tag        : test_vpc
-ipv4 cidr block : 10.0.0.0/16
+    name tag        : test_vpc
+
+    ipv4 cidr block : 10.0.0.0/16
 
 ### Create subnets
 
-- public subnet #1
+    
+Public subnet #1
+
     name tag : public1
     vpc      : test_vpc
     az       : us-east-1a
     ipv4 cidr: 10.0.1.0/24
 
-- public subnet #2
+Public subnet #2
+
     name tag : public2
     vpc      : test_vpc
     az       : us-east-1b
     ipv4 cidr: 10.0.2.0/24
 
-- private subnet #1
+Private subnet #1
+
     name tag : private1
     vpc      : test_vpc
     az       : us-east-1a
     ipv4 cidr: 10.0.10.0/24
 
-- private subnet #1
+Private subnet #1
+
     name tag : private2
     vpc      : test_vpc
     az       : us-east-1b
@@ -34,34 +40,36 @@ ipv4 cidr block : 10.0.0.0/16
 
 ### Create & atach internet gateway
 
-name tag : test_igw
+Name tag : test_igw
 
 ### Create public route table
 
-name tag : public_rt
+Name tag : public_rt
 
-associate the two subnets named public1 and public2 
+Associate the two subnets named public1 and public2 
 
-add public route
+Add public route
 
     0.0.0.0/0 -> test_igw
 
 ### Create private route table
 
-name tag : private_rt
+Name tag : private_rt
 
-associate the two subnet named private1 and private 2
+Associate the two subnet named private1 and private 2
 
 ### Create and configure security groups
 
-name tag: bastion_sg
+Name tag: bastion_sg
+    
     Type       : SSH
     Protocol   : TCP
     Port range : 22
     Source     : My IP
     Description: remote access
 
-name tag: private_sg
+Name tag: private_sg
+    
     Type       : SSH
     Protocol   : TCP
     Port range : 22
@@ -73,6 +81,7 @@ name tag: private_sg
 ### Configure our public and private instances
 
 Public EC2
+    
     OS                   : Amazon Linux 2 AMI
     Instance type        : t2.micro
     Subnet               : public1
@@ -83,6 +92,7 @@ Public EC2
     Key pair             : lab_test
 
 Private EC2
+    
     OS                   : Amazon Linux 2 AMI
     Instance type        : t2.micro
     Subnet               : private1
@@ -103,16 +113,20 @@ Private EC2
 
 ### Configure a NAT Gateway 
 
-- launch a nat gateway using the public2 subnet
-- add a route to the internet in private_rt with the nat gateway as destination  
+Launch a nat gateway using the public2 subnet
+
+Add a route to the internet in private_rt with the nat gateway as destination  
 
 ### Secure our infrastructure with NACL's
 
-name tag: public1
-- associate public1 subnet with public1 nacl
+Name tag: public1
+
+Associate public1 subnet with public1 nacl
     
     Allow SSH from my ip
+
     inbound rules
+    
         Rule #    : 100
         Type      : SSH
         Protocol  : TCP(6)
@@ -121,6 +135,7 @@ name tag: public1
         Allow/Deny: Allow
 
     outbound rules
+    
         Rule #     : 100
         Type       : Custom TCP rule
         Protocol   : TCP(6)
@@ -130,6 +145,7 @@ name tag: public1
 
     Allow SSH in to our VPC
     inbound rules
+    
         Rule #    : 110
         Type      : Custom TCP rule
         Protocol  : TCP(6)
@@ -138,6 +154,7 @@ name tag: public1
         Allow/Deny: Allow
     
     outbound rules
+    
         Rule #     : 110
         Type       : SSH
         Protocol   : TCP(6)
@@ -146,7 +163,9 @@ name tag: public1
         Allow/Deny : Allow
     
     Allow http/https traffic for updates
+    
     inbound rules
+    
         Rule #    : 120
         Type      : Custom TCP rule
         Protocol  : TCP(6)
@@ -155,6 +174,7 @@ name tag: public1
         Allow/Deny: Allow
     
     outbound rules
+    
         Rule #     : 120
         Type       : HTTP(80)
         Protocol   : TCP(6)
@@ -170,10 +190,13 @@ name tag: public1
         Allow/Deny : Allow
 
 name tag: private
-- associate the two private subnet with private nacl
+
+associate the two private subnet with private nacl
     
     Allow SSH from vpc cidr
+ 
     inbound rules
+ 
         Rule #    : 100
         Type      : SSH
         Protocol  : TCP(6)
@@ -182,6 +205,7 @@ name tag: private
         Allow/Deny: Allow
 
     outbound rules
+ 
         Rule #     : 100
         Type       : Custom TCP rule
         Protocol   : TCP(6)
@@ -190,7 +214,9 @@ name tag: private
         Allow/Deny : Allow
 
     Allow http traffic for updates
+ 
     inbound rules
+ 
         Rule #    : 110
         Type      : Custom TCP rule
         Protocol  : TCP(6)
@@ -199,6 +225,7 @@ name tag: private
         Allow/Deny: Allow
     
     outbound rules
+ 
         Rule #     : 110
         Type       : HTTP(80)
         Protocol   : TCP(6)
@@ -214,10 +241,13 @@ name tag: private
         Allow/Deny : Allow
 
 name tag: public2
-- associate public2 subnet with public2 nacl
 
-    Allow http traffic for updates
+associate public2 subnet with public2 nacl
+
+Allow http traffic for updates
+ 
     inbound rules
+ 
         Rule #    : 100
         Type      : Custom TCP rule
         Protocol  : TCP(6)
@@ -226,6 +256,7 @@ name tag: public2
         Allow/Deny: Allow
     
     outbound rules
+ 
         Rule #     : 100
         Type       : HTTP(80)
         Protocol   : TCP(6)
