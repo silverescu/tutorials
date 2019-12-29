@@ -272,8 +272,9 @@ Allow http traffic for updates
         Allow/Deny : Allow
 
 
+### Documentation
 
-    
+- [AWS VPC User Guide](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html)
 
     
     
